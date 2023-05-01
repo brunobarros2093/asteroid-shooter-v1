@@ -25,15 +25,15 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+ 
     # framerate limiter
     clock.tick(120)
+    # mouse inputs
+    ship_rect.center = pygame.mouse.get_pos()
     # updates  ----------------------x--y
     display_surface.fill((0, 0, 0))
     display_surface.blit(background_surface, (0, 0))
     display_surface.blit(text_surf, text_rect)
-    if ship_rect.top > 0:
-        ship_rect.y -= 4
-
     display_surface.blit(ship_surface, ship_rect)
     # show frames to player
     pygame.display.update()
