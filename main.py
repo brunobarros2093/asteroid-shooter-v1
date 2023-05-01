@@ -16,7 +16,9 @@ background_surface = pygame.image.load('./graphics/background.png').convert()
 font = pygame.font.Font('./graphics/subatomic.ttf', 50)
 text_surf = font.render('Space', True, 'White')
 
-ship_y_pos = 500
+# rectangules
+ship_rect = ship_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+text_rect = text_surf.get_rect(midbottom=(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80))
 while True:
     # input -> events (click, movement, buttons, controls)
     for event in pygame.event.get():
@@ -28,8 +30,10 @@ while True:
     # updates  ----------------------x--y
     display_surface.fill((0, 0, 0))
     display_surface.blit(background_surface, (0, 0))
-    ship_y_pos -= 1
-    display_surface.blit(text_surf, (500, 200))
-    display_surface.blit(ship_surface, (300, ship_y_pos))
+    display_surface.blit(text_surf, text_rect)
+    if ship_rect.top > 0:
+        ship_rect.y -= 4
+
+    display_surface.blit(ship_surface, ship_rect)
     # show frames to player
     pygame.display.update()
