@@ -41,6 +41,11 @@ while True:
     display_surface.blit(background_surface, (0, 0))
     display_surface.blit(text_surf, text_rect)
     display_surface.blit(laser_surface, laser_rect)
+    
+    # tests draw
+    pygame.draw.rect(display_surface, 'White', text_rect.inflate(30, 30), width=8, border_radius=5)
+    # end draw native rectangules
+
     display_surface.blit(ship_surface, ship_rect)
     # show frames to player - final frame
     pygame.display.update()
