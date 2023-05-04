@@ -59,6 +59,11 @@ meteor_surface = pygame.image.load('./graphics/meteor.png').convert_alpha()
 # import text
 font = pygame.font.Font('./graphics/subatomic.ttf', 50)
 
+# sounds
+laser_sound = pygame.mixer.Sound('./sounds/laser.ogg')
+explosion_sound = pygame.mixer.Sound('./sounds/explosion.wav')
+bg_musica = pygame.mixer.Sound('./sounds/music.wav')
+bg_musica.play(loops=-1)
 # rectangules
 ship_rect = ship_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
 
@@ -83,6 +88,9 @@ while True:
             # timer logic
             can_shoot = False
             shoot_time = pygame.time.get_ticks()
+            # play laser sound
+            laser_sound.play()
+
         if event.type == meteor_timer:
             x_pos = randint(-100, WINDOW_WIDTH + 100)
             y_pos = randint(-100, -50)
@@ -95,9 +103,24 @@ while True:
 
     # mouse inputs
     ship_rect.center = pygame.mouse.get_pos()
-
+    # updates
     laser_update(laser_list)
     meteor_update(meteor_list)
+
+    # meteor ship collisions
+    for meteor_tuple in meteor_list:
+        meteor_rect = meteor_tuple[0]
+        if ship_rect.colliderect(meteor_rect):
+            pygame.quit()
+            sys.exit()
+    # laser meteor collision
+    for meteor_tuple in meteor_list:
+        meteor_rect = meteor_tuple[0]
+        for laser in laser_list:
+            if laser.colliderect(meteor_rect):
+                meteor_list.remove(meteor_tuple)
+                explosion_sound.play()
+                laser_list.remove(laser)
     # laser timer
     can_shoot = laser_timer(can_shoot, duration=400)
     pygame.time.get_ticks()
